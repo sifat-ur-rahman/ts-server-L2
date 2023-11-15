@@ -14,8 +14,8 @@ userRouter.get("/create-user", (req, res) => {
     console.log(user);
     res.json({
         success: true,
-        message: 'User is created Successfully',
-        data: user
+        message: "User is created Successfully",
+        data: user,
     });
 });
 const logger = (req, res, next) => {
@@ -30,5 +30,20 @@ app.post("/", logger, (req, res) => {
     res.json({
         message: "Successfully received data",
     });
+});
+app.all("*", (req, res) => {
+    res.status(400).json({
+        success: false,
+        message: "Route is not found",
+    });
+});
+//global error handler
+app.use((error, req, res, next) => {
+    if (error) {
+        res.status(400).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
 });
 exports.default = app;
