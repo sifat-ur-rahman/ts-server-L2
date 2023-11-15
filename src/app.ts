@@ -3,6 +3,17 @@ const app = express();
 app.use(express.json())
 app.use(express.text())
 
+
+const userRouter = express.Router()
+
+
+
+
+
+
+
+
+
 const logger = (req:Request, res:Response, next:NextFunction)=>{
     console.log(req.url, req.method, req.hostname)
     next()

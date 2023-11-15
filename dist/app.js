@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.text());
+const userRouter = express_1.default.Router();
 const logger = (req, res, next) => {
     console.log(req.url, req.method, req.hostname);
     next();
