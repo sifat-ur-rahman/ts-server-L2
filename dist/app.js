@@ -8,6 +8,16 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.text());
 const userRouter = express_1.default.Router();
+app.use("/api/v1/user", userRouter);
+userRouter.get("/create-user", (req, res) => {
+    const user = req.body;
+    console.log(user);
+    res.json({
+        success: true,
+        message: 'User is created Successfully',
+        data: user
+    });
+});
 const logger = (req, res, next) => {
     console.log(req.url, req.method, req.hostname);
     next();
@@ -18,7 +28,7 @@ app.get("/", logger, (req, res) => {
 app.post("/", logger, (req, res) => {
     console.log(req.body);
     res.json({
-        message: "Successfully received data"
+        message: "Successfully received data",
     });
 });
 exports.default = app;
