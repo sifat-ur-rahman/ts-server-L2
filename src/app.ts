@@ -1,5 +1,8 @@
-import express, { NextFunction, Request, Response } from "express";
-const app = express();
+import express, { Application, NextFunction, Request, Response } from "express";
+//import cors from 'cors'
+const app:Application = express();
+
+
 app.use(express.json());
 app.use(express.text());
 
@@ -24,6 +27,7 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
 };
 
 app.get("/", logger, (req: Request, res: Response) => {
+ 
   res.send("Hello sifat!");
 });
 
@@ -39,17 +43,6 @@ app.all("*", (req: Request, res: Response) => {
     success: false,
     message: "Route is not found",
   });
-});
-
-//global error handler
-
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  if (error) {
-    res.status(400).json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
 });
 
 

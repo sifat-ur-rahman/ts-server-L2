@@ -1,23 +1,18 @@
-import { Server } from "http";
-const mongoose = require('mongoose');
+
+import mongoose from "mongoose";
 import app from "./app";
 import config from "./app/config";
 
-const port = 5000;
-
-let server: Server;
 
 async function main() {
-  await mongoose.connect(config.DB_URL);
-
-
+  try {
+    await mongoose.connect(config.DB_URL as string);
+    app.listen(config.port, () => {
+      console.log(`Example app listening on port ${config.port}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
-console.log(config.DB_URL)
+main()
 
-async function bootstrap() {
-  server = app.listen(config.port, () => {
-    console.log(`Example app listening on port ${config.port}`);
-  });
-}
-
-bootstrap();

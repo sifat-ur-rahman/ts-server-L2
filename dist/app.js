@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+//import cors from 'cors'
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.text());
@@ -36,14 +37,5 @@ app.all("*", (req, res) => {
         success: false,
         message: "Route is not found",
     });
-});
-//global error handler
-app.use((error, req, res, next) => {
-    if (error) {
-        res.status(400).json({
-            success: false,
-            message: "Something went wrong",
-        });
-    }
 });
 exports.default = app;
