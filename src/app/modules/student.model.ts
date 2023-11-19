@@ -1,6 +1,15 @@
 import { Schema, model } from 'mongoose';
-import { Guardian, LocalGuardian, Student } from './student/student.interface';
+import {
+  Guardian,
+  LocalGuardian,
+  Name,
+  Student,
+} from './student/student.interface';
 
+const NameSchema = new Schema<Name>({
+  firstName: { type: String, required: [true, 'First name is required '] },
+  lastName: { type: String },
+});
 const GuardianSchema = new Schema<Guardian>({
   fatherName: { type: String, required: true },
   fatherContactNo: { type: String, required: true },
@@ -17,19 +26,15 @@ const LocalGuardianSchema = new Schema<LocalGuardian>({
 });
 
 const studentSchema = new Schema<Student>({
-  id: { type: String, required: true },
-  name: {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-    },
-  },
+  id: { type: String, required: true, unique: true },
+  name: { type: NameSchema, required: true },
   gender: {
     type: String,
-    enum: ['male', 'female', 'other'],
+    enum: {
+      values: ['male', 'female', 'other'],
+      message:
+        "The gender field can only be one of the following: 'male', 'female' or 'other'",
+    },
     required: true,
   },
   dateOfBirth: { type: String },
@@ -38,11 +43,14 @@ const studentSchema = new Schema<Student>({
   emergencyContactNo: { type: String, required: true },
   bloodGroup: {
     type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+    enum: {
+      values: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+      message: '{VALUE} is not valid',
+    },
   },
   presentAddress: { type: String, required: true },
-  guardian: GuardianSchema,
-  localGuardian: LocalGuardianSchema,
+  guardian: { type: GuardianSchema, required: true },
+  localGuardian: { type: LocalGuardianSchema, required: true },
   profileImg: { type: String },
   isActive: {
     type: String,

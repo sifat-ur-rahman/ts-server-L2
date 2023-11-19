@@ -14,13 +14,14 @@ export type LocalGuardian = {
   occupation: string;
   contactNo: string;
 };
+export type Name = {
+  firstName: string;
+  lastName: string;
+};
 
 export type Student = {
   id: string;
-  name: {
-    firstName: string;
-    lastName: string;
-  };
+  name: Name;
   gender: 'male' | 'female';
   email: string;
   dateOfBirth: string;
