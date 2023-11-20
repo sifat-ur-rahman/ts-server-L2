@@ -30,7 +30,7 @@ const studentValidationSchema = z.object({
   gender: z.enum(['male', 'female', 'other']),
   dateOfBirth: z.string(),
   email: z.string().email(),
-  contactNo: z.string().min(1).max(255),
+  contactNo: z.string().min(1).max(25),
   emergencyContactNo: z.string().min(1).max(255),
   bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
   presentAddress: z.string().min(1).max(255),
