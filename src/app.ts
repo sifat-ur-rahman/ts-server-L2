@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import { StudentRoute } from './app/modules/student/student.route';
 import { UserRoute } from './app/modules/user/user.route';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 const app: Application = express();
 
 app.use(express.json());
@@ -25,5 +26,5 @@ app.all('*', (req: Request, res: Response) => {
     message: 'Route is not found',
   });
 });
-
+app.use(globalErrorHandler);
 export default app;

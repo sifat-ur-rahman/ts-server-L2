@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentService } from './student.service';
 // import studentValidationSchema from './student.validation';
 
-const getAllStudent = async (req: Request, res: Response) => {
+const getAllStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentService.getAllStudentFromDB();
     res.status(200).json({
@@ -10,16 +14,15 @@ const getAllStudent = async (req: Request, res: Response) => {
       message: 'Student are retrieved successfully',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong',
-      error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
-const getOneStudent = async (req: Request, res: Response) => {
+const getOneStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.getOneStudentFromDB(studentId);
@@ -28,16 +31,15 @@ const getOneStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieved successfully',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong',
-      error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
-const deleteOneStudent = async (req: Request, res: Response) => {
+const deleteOneStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.DeleteStudentFromDB(studentId);
@@ -46,13 +48,8 @@ const deleteOneStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieved successfully',
       data: result,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong',
-      error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
