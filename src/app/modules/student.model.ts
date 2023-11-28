@@ -62,6 +62,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     enum: ['active', 'inactive'],
     default: 'active',
   },
+  idDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 studentSchema.pre('save', async function (next) {
@@ -73,8 +77,14 @@ studentSchema.pre('save', async function (next) {
   );
   next();
 });
+
 studentSchema.post('save', function (doc, next) {
   doc.password = '';
+  next();
+});
+
+studentSchema.pre(/^find/, function (next) {
+  this.find({ idDeleted: { $ne: true } });
   next();
 });
 
