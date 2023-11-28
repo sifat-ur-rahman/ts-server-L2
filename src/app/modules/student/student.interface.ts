@@ -23,6 +23,7 @@ export type TUserName = {
 
 export type TStudent = {
   id: string;
+  password: string;
   name: TUserName;
   gender: 'male' | 'female' | 'other';
   email: string;
@@ -38,6 +39,7 @@ export type TStudent = {
 };
 
 export type StudentMethods = {
+  // eslint-disable-next-line no-unused-vars
   isUserExits(id: string): Promise<TStudent | null>;
 };
 

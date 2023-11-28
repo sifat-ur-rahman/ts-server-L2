@@ -29,6 +29,7 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   id: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   name: { type: NameSchema, required: true },
   gender: {
     type: String,
@@ -60,6 +61,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     default: 'active',
   },
 });
+
+studentSchema.pre('save', function () {});
+studentSchema.post('save', function () {});
+
 studentSchema.methods.isUserExits = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;

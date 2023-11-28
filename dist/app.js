@@ -12,6 +12,12 @@ app.use((0, cors_1.default)());
 //application route.
 app.use('/api/v1/students', student_route_1.StudentRoute);
 //route error handler
+app.all('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Server is rending',
+    });
+});
 app.all('*', (req, res) => {
     res.status(400).json({
         success: false,
