@@ -77,8 +77,14 @@ studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName}  ${this.name.lastName}`;
 });
 
-studentSchema.pre(/^find/, function (next) {
-  this.find({ idDeleted: { $ne: true } });
+// Query Middleware
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
   next();
 });
 
