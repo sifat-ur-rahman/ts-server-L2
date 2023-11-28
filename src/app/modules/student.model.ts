@@ -7,6 +7,8 @@ import {
   StudentModel,
   StudentMethods,
 } from './student/student.interface';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const NameSchema = new Schema<TUserName>({
   firstName: { type: String, required: [true, 'First name is required '] },
@@ -62,8 +64,19 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   },
 });
 
-studentSchema.pre('save', function () {});
-studentSchema.post('save', function () {});
+studentSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.BCRYPT_SALT_ROUNDS),
+  );
+  next();
+});
+studentSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
 
 studentSchema.methods.isUserExits = async function (id: string) {
   const existingUser = await Student.findOne({ id });
