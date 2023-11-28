@@ -1,28 +1,6 @@
 import { Request, Response } from 'express';
 import { StudentService } from './student.service';
-import studentValidationSchema from './student.validation';
-
-const createStudent = async (req: Request, res: Response) => {
-  try {
-    const studentData = req.body;
-
-    //data validation using zod
-    const zodParserData = studentValidationSchema.parse(studentData);
-    const result = await StudentService.createStudentIntoDB(zodParserData);
-    res.status(200).json({
-      success: true,
-      message: 'Student is create successfully',
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Something went wrong',
-      error,
-    });
-  }
-};
+// import studentValidationSchema from './student.validation';
 
 const getAllStudent = async (req: Request, res: Response) => {
   try {
@@ -79,7 +57,7 @@ const deleteOneStudent = async (req: Request, res: Response) => {
 };
 
 export const StudentControllers = {
-  createStudent,
+  //createStudent,
   getAllStudent,
   getOneStudent,
   deleteOneStudent,

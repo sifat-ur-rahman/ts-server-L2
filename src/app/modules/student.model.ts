@@ -29,45 +29,55 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
   occupation: { type: String, required: true },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
-  id: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  name: { type: NameSchema, required: true },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female', 'other'],
-      message:
-        "The gender field can only be one of the following: 'male', 'female' or 'other'",
+const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
+  {
+    id: { type: String, required: true, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
     },
-    required: true,
-  },
-  dateOfBirth: { type: String },
-  email: { type: String, trim: true, required: true },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: { type: String, required: true },
-  bloodGroup: {
-    type: String,
-    enum: {
-      values: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
-      message: '{VALUE} is not valid',
+    password: { type: String, required: true },
+    name: { type: NameSchema, required: true },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'other'],
+        message:
+          "The gender field can only be one of the following: 'male', 'female' or 'other'",
+      },
+      required: true,
     },
-  },
-  presentAddress: { type: String, required: true },
-  guardian: { type: GuardianSchema, required: true },
-  localGuardian: { type: LocalGuardianSchema, required: true },
-  profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: ['active', 'inactive'],
-    default: 'active',
-  },
-  idDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+    dateOfBirth: { type: String },
+    email: { type: String, trim: true, required: true },
+    contactNo: { type: String, required: true },
+    emergencyContactNo: { type: String, required: true },
+    bloodGroup: {
+      type: String,
+      enum: {
+        values: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+        message: '{VALUE} is not valid',
+      },
+    },
+    presentAddress: { type: String, required: true },
+    guardian: { type: GuardianSchema, required: true },
+    localGuardian: { type: LocalGuardianSchema, required: true },
+    profileImg: { type: String },
 
+    isDelete: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    toJSON: { virtuals: true },
+  },
+);
+
+studentSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName}  ${this.name.lastName}`;
+});
 studentSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
