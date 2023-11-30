@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 
+//Create a Student
 const createStudent = catchAsync(async (req, res) => {
   const { password, student: studentData } = req.body;
 
